@@ -1,15 +1,23 @@
 #include "ray.h"
 #include "vec3.h"
 
-Ray::Ray(const Vec3& from, const Vec3& to) {
-    this->from = from;
-    this->to = to;
+Ray::Ray(const Vec3& origin, const Vec3& direction) {
+    origin_ = origin;
+    direction_ = direction;
+}
+
+Vec3 Ray::origin() const {
+    return origin_;
+}
+
+Vec3 Ray::direction() const {
+    return direction_;
 }
 
 Vec3 Ray::point_at(float t) const {
-    return this->from + t*this->to;
+    return origin_ + t*direction_;
 }
 
 Vec3 Ray::unit_vector() const {
-    return ::unit_vector(this->to - this->from);
+    return ::unit_vector(direction_ - origin_);
 }

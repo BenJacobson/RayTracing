@@ -40,6 +40,10 @@ float Vec3::length() const {
     return sqrt(x_*x_ + y_*y_ + z_*z_);
 }
 
+float dot(const Vec3& v1, const Vec3& v2) {
+    return v1.x()*v2.x() + v1.y()*v2.y() + v1.z()*v2.z();
+}
+
 Vec3 unit_vector(const Vec3& v) {
     return v / v.length();
 }

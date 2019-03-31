@@ -20,6 +20,8 @@ private:
     float z_;
 };
 
+float dot(const Vec3& v1, const Vec3& v2);
+
 Vec3 unit_vector(const Vec3& v);
 
 Vec3 lerp(const Vec3& v1, const Vec3& v2, float t);
