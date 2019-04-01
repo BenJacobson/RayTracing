@@ -20,8 +20,8 @@ float hit_sphere(const Vec3& center, float radius, const Ray& ray) {
 
 Vec3 color(const Ray& ray) {
     const Vec3 sphere_center = Vec3(0.0, 0.0, -2.0);
-    const Vec3 top_color = Vec3(0.0, 0.0, 0.5);
-    const Vec3 bottom_color = Vec3(0.5, 0.0, 0.5);
+    const Vec3 top_color = Vec3(0.0, 0.5, 1.0);
+    const Vec3 bottom_color = Vec3(1.0, 0.5, 1.0);
 
     float t = hit_sphere(sphere_center, 1.0, ray);
 
@@ -30,11 +30,9 @@ Vec3 color(const Ray& ray) {
         return 0.5 * (normal + Vec3(1.0));
     } else {
         Vec3 unit = ray.unit_vector();
-        float y = (unit.y() + 1.0) * 0.5;
+        float y = 0.5 * (unit.y() + 1.0);
         return lerp(top_color, bottom_color, y);
     }
-
-
 }
 
 int main() {
@@ -44,16 +42,16 @@ int main() {
     int width = 600;
     PPM ppm = PPM(height, width);
 
-    const Vec3 lower_left_corner = Vec3(-2.0, -1.0, -1.0);
+    const Vec3 top_left_corner = Vec3(-2.0, 1.0, -1.0);
     const Vec3 horizontal = Vec3(4.0, 0.0, 0.0);
-    const Vec3 vertical = Vec3(0.0, 2.0, 0.0);
+    const Vec3 vertical = Vec3(0.0, -2.0, 0.0);
     const Vec3 origin = Vec3(0.0, 0.0, 0.0);
 
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
             float u = float(j) / float(width);
             float v = float(i) / float(height);
-            Ray ray = Ray(origin, lower_left_corner + u*horizontal + v*vertical);
+            Ray ray = Ray(origin, top_left_corner + u*horizontal + v*vertical);
             Vec3 pixel_color = color(ray);
             ppm.setPixel(i, j, int(255.99*pixel_color.r()), int(255.99*pixel_color.g()), int(255.99*pixel_color.b()));
         }
