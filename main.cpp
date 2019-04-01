@@ -40,7 +40,7 @@ int main() {
 
     int height = 300;
     int width = 600;
-    PPM ppm = PPM(height, width);
+    PPM ppm = PPM(height, width, 8);
 
     const Vec3 top_left_corner = Vec3(-2.0, 1.0, -1.0);
     const Vec3 horizontal = Vec3(4.0, 0.0, 0.0);
@@ -52,8 +52,7 @@ int main() {
             float u = float(j) / float(width);
             float v = float(i) / float(height);
             Ray ray = Ray(origin, top_left_corner + u*horizontal + v*vertical);
-            Vec3 pixel_color = color(ray);
-            ppm.setPixel(i, j, int(255.99*pixel_color.r()), int(255.99*pixel_color.g()), int(255.99*pixel_color.b()));
+            ppm.setPixel(i, j, color(ray));
         }
     }
 

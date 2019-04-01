@@ -1,30 +1,31 @@
 #include <iostream>
 #include "ppm.h"
 
-PPM::PPM(int height, int width) {
-    this->height = height;
-    this->width = width;
-    this->pixels = new int[height * width * 3];
+PPM::PPM(int height, int width, unsigned int color_bits) {
+    this->max_color_ = (1u << color_bits) - 1;
+    this->height_ = height;
+    this->width_ = width;
+    this->pixels_ = new int[height * width * 3];
 }
 
-void PPM::setPixel(int row, int col, int r, int g, int b) {
+void PPM::setPixel(int row, int col, const Vec3& color) {
     int index = this->getIndex(row, col);
-    this->pixels[index] = r;
-    this->pixels[index+1] = g;
-    this->pixels[index+2] = b;
+    this->pixels_[index] = int(color.r() * (max_color_ + .99));
+    this->pixels_[index+1] = int(color.g() * (max_color_ + .99));
+    this->pixels_[index+2] = int(color.b() * (max_color_ + .99));
 }
 
 void PPM::print() {
     std::cout << "P3\n";
-    std::cout << this->width << ' ' << this->height << '\n';
-    std::cout << "255\n";
-    for (int i = 0, k = 0; i < this->height; ++i) {
-        for (int j = 0; j < this->width; ++j, k += 3) {
-            std::cout << this->pixels[k] << ' ' << this->pixels[k+1] << ' ' << this->pixels[k+2] << '\n';
+    std::cout << this->width_ << ' ' << this->height_ << '\n';
+    std::cout << max_color_ << '\n';
+    for (int i = 0, k = 0; i < this->height_; ++i) {
+        for (int j = 0; j < this->width_; ++j, k += 3) {
+            std::cout << this->pixels_[k] << ' ' << this->pixels_[k+1] << ' ' << this->pixels_[k+2] << '\n';
         }
     }
 }
 
 int PPM::getIndex(int row, int col) {
-    return (row * width + col) * 3;
+    return (row * width_ + col) * 3;
 }
