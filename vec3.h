@@ -4,6 +4,7 @@
 class Vec3 {
 public:
     Vec3();
+    Vec3(float a);
     Vec3(float x, float y, float z);
 
     float x() const;
@@ -29,8 +30,6 @@ Vec3 lerp(const Vec3& v1, const Vec3& v2, float t);
 Vec3 operator*(float t, const Vec3& v);
 
 Vec3 operator*(const Vec3& v, float t);
-
-Vec3 operator/(const Vec3& v, float f);
 
 Vec3 operator+(const Vec3& v1, const Vec3& v2);
 

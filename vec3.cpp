@@ -2,9 +2,9 @@
 
 #include <math.h>
 
-Vec3::Vec3() {
-    this->x_ = this->y_ = this->z_ = 0;
-}
+Vec3::Vec3() : Vec3(0) {}
+
+Vec3::Vec3(float a) : Vec3(a, a, a) {}
 
 Vec3::Vec3(float x, float y, float z) {
     this->x_ = x;
@@ -45,7 +45,7 @@ float dot(const Vec3& v1, const Vec3& v2) {
 }
 
 Vec3 unit_vector(const Vec3& v) {
-    return v / v.length();
+    return 1 / v.length() * v;
 }
 
 Vec3 lerp(const Vec3& v1, const Vec3& v2, float t) {
@@ -58,13 +58,6 @@ Vec3 operator*(float t, const Vec3& v) {
 
 Vec3 operator*(const Vec3& v, float t) {
     return t*v;
-}
-
-Vec3 operator/(const Vec3& v, float f) {
-    if (f == 0) {
-        return {MAXFLOAT, MAXFLOAT, MAXFLOAT};
-    }
-    return {v.x()/f, v.y()/f, v.z()/f};
 }
 
 Vec3 operator+(const Vec3& v1, const Vec3& v2) {
