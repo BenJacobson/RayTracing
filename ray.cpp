@@ -17,7 +17,3 @@ Vec3 Ray::direction() const {
 Vec3 Ray::point_at(float t) const {
     return origin_ + t*direction_;
 }
-
-Vec3 Ray::unit_vector() const {
-    return ::unit_vector(direction_ - origin_);
-}

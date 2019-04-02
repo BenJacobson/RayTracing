@@ -37,7 +37,11 @@ float Vec3::b() const {
 }
 
 float Vec3::length() const {
-    return sqrt(x_*x_ + y_*y_ + z_*z_);
+    return ::sqrt(x_*x_ + y_*y_ + z_*z_);
+}
+
+Vec3 Vec3::sqrt() const {
+    return {::sqrt(x_), ::sqrt(y_), ::sqrt(z_)};
 }
 
 Vec3& Vec3::operator*=(float f) {

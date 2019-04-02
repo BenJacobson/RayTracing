@@ -15,6 +15,8 @@ public:
     float b() const;
     float length() const;
 
+    Vec3 sqrt() const;
+
     Vec3& operator*=(float f);
     Vec3& operator+=(Vec3 const& v);
 
