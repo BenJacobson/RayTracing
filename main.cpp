@@ -1,3 +1,4 @@
+#include "camera.h"
 #include "entity.h"
 #include "entity_list.h"
 #include "ppm.h"
@@ -30,10 +31,7 @@ int main() {
     int samples = 100;
     PPM ppm = PPM(height, width, 8);
 
-    const Vec3 top_left_corner = Vec3(-2.0, 1.0, -1.0);
-    const Vec3 horizontal = Vec3(4.0, 0.0, 0.0);
-    const Vec3 vertical = Vec3(0.0, -2.0, 0.0);
-    const Vec3 origin = Vec3(0.0, 0.0, 0.0);
+    Camera camera;
 
     EntityList world;
     world.push(new Sphere(Vec3(0.0, 0.0, -1.0), 0.5));
@@ -48,9 +46,8 @@ int main() {
             Vec3 pixel_color;
             for (int s = 0; s < samples; ++s) {
                 float u = float(j + dist(engine)) / float(width);
-                float v = float(i + dist(engine)) / float(height);
-                Ray ray = Ray(origin, top_left_corner + u * horizontal + v * vertical);
-                pixel_color += color(ray, world);
+                float v = float(height - i - dist(engine)) / float(height);
+                pixel_color += color(camera.get_ray(u, v), world);
             }
             pixel_color *= 1.0 / float(samples);
             ppm.setPixel(i, j, pixel_color);

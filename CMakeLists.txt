@@ -4,6 +4,8 @@ project(RayTracing)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(RayTracing
+        camera.cpp
+        camera.h
         entity.h
         entity_list.cpp
         entity_list.h
