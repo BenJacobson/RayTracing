@@ -3,4 +3,16 @@ project(RayTracing)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(RayTracing main.cpp ppm.cpp ppm.h ray.cpp ray.h vec3.cpp vec3.h)
+add_executable(RayTracing
+        entity.h
+        entity_list.cpp
+        entity_list.h
+        main.cpp
+        ppm.cpp
+        ppm.h
+        ray.cpp
+        ray.h
+        sphere.cpp
+        sphere.h
+        vec3.cpp
+        vec3.h)

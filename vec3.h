@@ -15,6 +15,9 @@ public:
     float b() const;
     float length() const;
 
+    Vec3& operator*=(float f);
+    Vec3& operator+=(Vec3 const& v);
+
 private:
     float x_;
     float y_;

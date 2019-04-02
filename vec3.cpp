@@ -40,6 +40,22 @@ float Vec3::length() const {
     return sqrt(x_*x_ + y_*y_ + z_*z_);
 }
 
+Vec3& Vec3::operator*=(float f) {
+    x_ *= f;
+    y_ *= f;
+    z_ *= f;
+    return *this;
+}
+
+
+Vec3& Vec3::operator+=(Vec3 const& v) {
+    x_ += v.x();
+    y_ += v.y();
+    z_ += v.z();
+    return *this;
+}
+
+
 float dot(const Vec3& v1, const Vec3& v2) {
     return v1.x()*v2.x() + v1.y()*v2.y() + v1.z()*v2.z();
 }
