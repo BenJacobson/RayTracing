@@ -36,6 +36,8 @@ Vec3 operator*(float t, const Vec3& v);
 
 Vec3 operator*(const Vec3& v, float t);
 
+Vec3 operator*(const Vec3& v1, const Vec3& v2);
+
 Vec3 operator+(const Vec3& v1, const Vec3& v2);
 
 Vec3 operator-(const Vec3& v1, const Vec3& v2);
