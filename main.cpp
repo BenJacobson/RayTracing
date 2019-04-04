@@ -3,6 +3,7 @@
 #include "entity.h"
 #include "entity_list.h"
 #include "material.h"
+#include "metal.h"
 #include "ppm.h"
 #include "ray.h"
 #include "sphere.h"
@@ -44,12 +45,11 @@ int main() {
 
     Camera camera;
 
-    const Diffuse diffuseMaterial(Vec3(0.8, 0.5, 0.3));
-
     EntityList world;
-    world.push(new Sphere(Vec3(0.0, 0.0, -1.0), &diffuseMaterial, 0.5));
-    world.push(new Sphere(Vec3(0.0, -100.5, -1.0), &diffuseMaterial, 100.0));
-
+    world.push(new Sphere(Vec3(0.0, -100.5, -1.0), new Diffuse(Vec3(0.3, 0.8, 0.5)), 100.0));
+    world.push(new Sphere(Vec3(0.0, 0.0, -1.0), new Diffuse(Vec3(0.8, 0.5, 0.3)), 0.5));
+    world.push(new Sphere(Vec3(-1.0, 0.0, -1.0), new Metal(Vec3(0.7, 0.7, 0.7), 0.0), 0.5));
+    world.push(new Sphere(Vec3(1.0, 0.0, -1.0), new Metal(Vec3(0.45, 0.35, 0.11), 0.5), 0.5));
 
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {

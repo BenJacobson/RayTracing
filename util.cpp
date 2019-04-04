@@ -5,6 +5,16 @@
 
 namespace util {
 
+    float clamp(float f, float low, float high) {
+        if (f < low) {
+            return low;
+        }
+        if (f > high) {
+            return high;
+        }
+        return f;
+    }
+
     std::random_device rd;
     std::mt19937 engine(rd());
     std::uniform_real_distribution<> dist(0.0, 1.0);

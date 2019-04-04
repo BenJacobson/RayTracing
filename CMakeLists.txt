@@ -14,6 +14,8 @@ add_executable(RayTracing
         hit_record.h
         main.cpp
         material.h
+        metal.cpp
+        metal.h
         ppm.cpp
         ppm.h
         ray.cpp
