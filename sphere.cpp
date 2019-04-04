@@ -2,12 +2,13 @@
 
 #include <math.h>
 
-Sphere::Sphere(Vec3 center, float radius) {
+Sphere::Sphere(Vec3 center, const Material* material, float radius) {
     center_ = center;
+    material_ = material;
     radius_ = radius;
 }
 
-bool Sphere::hit(const Ray& ray, float t_min, float t_max, hit_record& record) const {
+const Material* Sphere::hit(const Ray& ray, float t_min, float t_max, hit_record& record) const {
     Vec3 oc = ray.origin() - center_;
     float a = dot(ray.direction(), ray.direction());
     float b = dot(oc, ray.direction());
@@ -19,15 +20,15 @@ bool Sphere::hit(const Ray& ray, float t_min, float t_max, hit_record& record) c
             record.t = low;
             record.p = ray.point_at(low);
             record.normal = 1 / radius_ * (record.p - center_);
-            return true;
+            return material_;
         }
         float high = (-b + sqrt(discriminant)) / a;
         if (high < t_max && high > t_min) {
             record.t = high;
             record.p = ray.point_at(high);
             record.normal = 1 / radius_ * (record.p - center_);
-            return true;
+            return material_;
         }
     }
-    return false;
+    return nullptr;
 }

@@ -14,14 +14,15 @@
 
 const int max_depth = 50;
 
-Vec3 color(const Ray& ray, Entity& world, Material& material, int depth) {
+Vec3 color(const Ray& ray, Entity& world, int depth) {
     hit_record record;
-    if (world.hit(ray, 0.001, MAXFLOAT, record)) {
+    const Material* material_hit = world.hit(ray, 0.001, MAXFLOAT, record);
+    if (material_hit) {
         Ray scattered;
         Vec3 attenuation;
-        bool shouldContinue = material.scatter(ray, record, attenuation, scattered);
+        bool shouldContinue = material_hit->scatter(ray, record, attenuation, scattered);
         if (depth < max_depth && shouldContinue) {
-            return attenuation * color(scattered, world, material, depth+1);
+            return attenuation * color(scattered, world, depth+1);
         } else {
             return {0.0};
         }
@@ -43,11 +44,12 @@ int main() {
 
     Camera camera;
 
-    EntityList world;
-    world.push(new Sphere(Vec3(0.0, 0.0, -1.0), 0.5));
-    world.push(new Sphere(Vec3(0.0, -100.5, -1.0), 100.0));
+    const Diffuse diffuseMaterial(Vec3(0.8, 0.5, 0.3));
 
-    Diffuse diffuseMaterial(Vec3(0.8, 0.5, 0.3));
+    EntityList world;
+    world.push(new Sphere(Vec3(0.0, 0.0, -1.0), &diffuseMaterial, 0.5));
+    world.push(new Sphere(Vec3(0.0, -100.5, -1.0), &diffuseMaterial, 100.0));
+
 
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
@@ -55,7 +57,7 @@ int main() {
             for (int s = 0; s < samples; ++s) {
                 float u = float(j + util::random()) / float(width);
                 float v = float(height - i - util::random()) / float(height);
-                pixel_color += color(camera.get_ray(u, v), world, diffuseMaterial, 0);
+                pixel_color += color(camera.get_ray(u, v), world, 0);
             }
             pixel_color *= 1.0 / float(samples);
             ppm.setPixel(i, j, pixel_color.sqrt());

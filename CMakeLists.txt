@@ -11,6 +11,7 @@ add_executable(RayTracing
         entity.h
         entity_list.cpp
         entity_list.h
+        hit_record.h
         main.cpp
         material.h
         ppm.cpp

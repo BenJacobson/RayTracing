@@ -4,20 +4,16 @@ void EntityList::push(Entity *entity) {
     entities_.push_back(entity);
 }
 
-bool EntityList::hit(const Ray& ray, float t_min, float t_max, hit_record& record) const {
-    hit_record closest_hit;
-    closest_hit.t = t_max;
-    bool found_hit = false;
+const Material* EntityList::hit(const Ray& ray, float t_min, float t_max, hit_record& record) const {
+    record.t = t_max;
+    const Material* material = nullptr;
 
     for (const auto entity : entities_) {
-        if (entity->hit(ray, t_min, closest_hit.t, closest_hit)) {
-            found_hit = true;
+        const Material *material_hit = entity->hit(ray, t_min, record.t, record);
+        if (material_hit) {
+            material = material_hit;
         }
     }
 
-    if (found_hit) {
-        record = closest_hit;
-    }
-
-    return found_hit;
+    return material;
 }
