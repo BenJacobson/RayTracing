@@ -11,6 +11,9 @@
 #include "util.h"
 #include "vec3.h"
 
+#include "omp.h"
+
+#include <chrono>
 #include <iostream>
 #include <math.h>
 
@@ -38,13 +41,14 @@ Vec3 color(const Ray& ray, Entity& world, int depth) {
 
 int main() {
     freopen("../out.ppm", "w", stdout);
+    auto start = std::chrono::high_resolution_clock::now();
 
     int height = 300;
     int width = 600;
     int samples = 100;
     PPM ppm = PPM(height, width, 8);
 
-    Camera camera;
+    Camera camera(width, height);
 
     EntityList world;
     world.push(new Sphere(Vec3(0.0, -1000.5, -1.0), new Diffuse(Vec3(0.3, 0.5, 0.5)), 1000.0));
@@ -53,6 +57,7 @@ int main() {
     world.push(new Sphere(Vec3(0.5, 0.0, -2.0), new Metal(Vec3(0.45, 0.35, 0.11), 0.5), 0.5));
     world.push(new Sphere(Vec3(1.5, 0.0, -1.0), new Metal(Vec3(0.5, 0.5, 0.5), 0.0), 0.5));
 
+    #pragma omp parallel for collapse(2)
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
             Vec3 pixel_color;
@@ -67,6 +72,10 @@ int main() {
     }
 
     ppm.print();
+
+    auto finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = finish - start;
+    std::cerr << elapsed.count() << std::endl;
 
     return 0;
 }

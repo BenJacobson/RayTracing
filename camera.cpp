@@ -1,9 +1,10 @@
 #include "camera.h"
 
-Camera::Camera() {
+Camera::Camera(float width, float height) {
+    float wide = width / height;
     origin_ = Vec3(0.0, 0.0, 0.0);
-    lower_left_corner_ = Vec3(-2.0, -1.0, -1.0);
-    horizontal_ = Vec3(4.0, 0.0, 0.0);
+    lower_left_corner_ = Vec3(-wide, -1.0, -1.0);
+    horizontal_ = Vec3(2*wide, 0.0, 0.0);
     vertical_ = Vec3(0.0, 2.0, 0.0);
 }
 

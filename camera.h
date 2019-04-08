@@ -5,7 +5,7 @@
 
 class Camera {
 public:
-    Camera();
+    Camera(float width, float height);
     Ray get_ray(float u, float v);
 
 private:

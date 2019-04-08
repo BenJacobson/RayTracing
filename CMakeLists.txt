@@ -3,6 +3,8 @@ project(RayTracing)
 
 set(CMAKE_CXX_STANDARD 14)
 
+set(CMAKE_CXX_FLAGS "-fopenmp")
+
 add_executable(RayTracing
         camera.cpp
         camera.h
