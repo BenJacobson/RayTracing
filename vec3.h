@@ -42,4 +42,6 @@ Vec3 operator+(const Vec3& v1, const Vec3& v2);
 
 Vec3 operator-(const Vec3& v1, const Vec3& v2);
 
+Vec3 operator-(const Vec3& v);
+
 #endif
