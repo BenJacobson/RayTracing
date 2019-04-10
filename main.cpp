@@ -17,7 +17,11 @@
 #include <iostream>
 #include <math.h>
 
-const int max_depth = 50;
+const int MAX_DEPTH = 5;
+const int NUM_SMALL_BALLS = 400;
+const float SMALL_BALL_RADIUS = 0.1;
+const float LARGE_BALL_RADIUS = 0.5;
+const float GROUND_HEIGHT = -0.75;
 
 Vec3 color(const Ray& ray, Entity& world, int depth) {
     hit_record record;
@@ -26,7 +30,7 @@ Vec3 color(const Ray& ray, Entity& world, int depth) {
         Ray scattered;
         Vec3 attenuation;
         bool shouldContinue = material_hit->scatter(ray, record, attenuation, scattered);
-        if (depth < max_depth && shouldContinue) {
+        if (depth < MAX_DEPTH && shouldContinue) {
             return attenuation * color(scattered, world, depth+1);
         } else {
             return {0.0};
@@ -45,17 +49,36 @@ int main() {
 
     int height = 300;
     int width = 600;
-    int samples = 100;
+    int samples = 200;
     PPM ppm = PPM(height, width, 8);
 
     Camera camera(width, height);
-
     EntityList world;
-    world.push(new Sphere(Vec3(0.0, -1000.5, -1.0), new Diffuse(Vec3(0.3, 0.5, 0.5)), 1000.0));
-    world.push(new Sphere(Vec3(-2.5, 0.0, -2.0), new Diffuse(Vec3(0.8, 0.5, 0.3)), 0.5));
-    world.push(new Sphere(Vec3(-0.5, 0.0, -1.0), new Glass(1.5), 0.5));
-    world.push(new Sphere(Vec3(0.5, 0.0, -2.0), new Metal(Vec3(0.45, 0.35, 0.11), 0.5), 0.5));
-    world.push(new Sphere(Vec3(1.5, 0.0, -1.0), new Metal(Vec3(0.5, 0.5, 0.5), 0.0), 0.5));
+
+    // Ground
+    world.push(new Sphere(Vec3(0.0, GROUND_HEIGHT-1000.0, -1.0), new Diffuse(Vec3(0.5, 0.5, 0.5)), 1000.0));
+
+    // Large Spheres
+    world.push(new Sphere(Vec3(-0.7, GROUND_HEIGHT+LARGE_BALL_RADIUS, -4.5),
+            new Diffuse(Vec3(0.8, 0.5, 0.3)), LARGE_BALL_RADIUS));
+    world.push(new Sphere(Vec3(-0.1, GROUND_HEIGHT+LARGE_BALL_RADIUS, -3.5),
+            new Glass(1.5), LARGE_BALL_RADIUS));
+    world.push(new Sphere(Vec3(0.5, GROUND_HEIGHT+LARGE_BALL_RADIUS, -2.5),
+            new Metal(Vec3(0.5, 0.5, 0.5), 0.0), LARGE_BALL_RADIUS));
+
+    for (int i = 0; i < NUM_SMALL_BALLS; ++i) {
+        Material *material;
+        float material_type = util::random();
+        if (material_type < 0.1) {
+            material = new Glass(1.5);
+        } else if (material_type < 0.5) {
+            material = new Metal(Vec3(util::random(), util::random(), util::random()), 0.0);
+        } else {
+            material = new Diffuse(Vec3(util::random(), util::random(), util::random()));
+        }
+        world.push(new Sphere(Vec3(10.0f*(0.5f-util::random()), GROUND_HEIGHT+SMALL_BALL_RADIUS, -10.0f*util::random()),
+                material, SMALL_BALL_RADIUS));
+    }
 
     #pragma omp parallel for collapse(2)
     for (int i = 0; i < height; ++i) {
